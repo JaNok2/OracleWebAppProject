@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007BFF;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<h2>Edit Reservation</h2>
+
+<form method="post" action="{{ url_for('edit_reservation') }}">
+  <input type="hidden" name="reservation_id" value="{{ reservation[0] }}">
+  
+  <label>Customer Name:</label>
+  <input type="text" name="customer_name" value="{{ reservation[1] }}" required>
+  
+  <label>Customer Phone:</label>
+  <input type="text" name="customer_phone" value="{{ reservation[2] }}" required>
+  
+  <label>Reservation Date:</label>
+  <input 
+    type="date" 
+    name="reservation_date" 
+    value="{{ reservation[3].split('T')[0] if reservation[3] else '' }}" 
+    required>
+  
+  <label>Reservation Time:</label>
+  <input 
+    type="time" 
+    name="reservation_time" 
+    value="{{ reservation[3].split('T')[1][0:5] if reservation[3] and 'T' in reservation[3] else '' }}" 
+    required>
+  
+  <label>Guest Count:</label>
+  <input type="number" name="guest_count" value="{{ reservation[4] }}" required>
+  
+  <button type="submit">Save Changes</button>
+</form>
+
+<a href="{{ url_for('manager') }}">Back to Manager</a>
+{% endblock %}

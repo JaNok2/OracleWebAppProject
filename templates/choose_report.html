@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Choose a Report</h2>
+<div class="button-container">
+  <a href="{{ url_for('pdf_report', report_type=1) }}">pdfReport</a>
+  <a href="{{ url_for('pdf_report', report_type=2) }}">groupedPdfReport</a>
+  <a href="{{ url_for('pdf_report', report_type=3) }}">chartPdfReport</a>
+</div>
+{% endblock %}

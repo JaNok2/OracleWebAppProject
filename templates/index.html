@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  thead tr {
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+  }
+
+  thead th, tbody td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: white;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+    font-family: Arial, sans-serif;
+  }
+</style>
+
+<h2>Restaurant Reservations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Customer Name</th>
+      <th>Table</th>
+      <th>Date</th>
+      <th>Guests</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in reservations %}
+    <tr style="text-align: center;">
+      <td>{{ row[1] }}</td>
+      <td>{{ row[2] }}</td>
+      <td>{{ row[3] }}</td>
+      <td>{{ row[4] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+
+  h2, h3 {
+    text-align: center;
+    color: #333;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .button-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+  }
+
+  .button-container button:hover {
+    background-color: #0056b3;
+  }
+
+  .form-container {
+    display: none;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+
+  .form-container.active {
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 10px;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  .actions button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .actions .delete {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .actions .delete:hover {
+    background-color: #c82333;
+  }
+
+  .actions .edit {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .actions .edit:hover {
+    background-color: #218838;
+  }
+</style>
+
+<html lang="en">
+<h2>Manage Reservations</h2>
+
+<div class="button-container">
+  <button onclick="toggleForm('search')">Search Reservations</button>
+  <button onclick="toggleForm('add')">Add Reservation</button>
+</div>
+
+<div id="search-form" class="form-container">
+  <h3>Search Reservations</h3>
+  <form method="get" action="{{ url_for('manager') }}">
+    <label>Customer Name:</label>
+    <input type="text" name="search_name"><br><br>
+    <label>Customer Phone:</label>
+    <input type="text" name="search_phone"><br><br>
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<div id="add-form" class="form-container">
+  <h3>Add Reservation</h3>
+  <form method="post" action="{{ url_for('manager') }}">
+    <input type="hidden" name="action" value="add">
+    <label>Customer Name:</label>
+    <input type="text" name="customer_name" required><br><br>
+    <label>Customer Phone:</label>
+    <input type="text" name="customer_phone" required><br><br>
+    <label>Reservation Date:</label>
+    <input type="date" name="reservation_date" lang="en" required><br><br>
+    <label>Reservation Time:</label>
+    <input type="time" name="reservation_time" required><br><br>
+    <label>Guest Count:</label>
+    <input type="number" name="guest_count" value="2" required><br><br>
+    <button type="submit">Add Reservation</button>
+  </form>
+</div>
+
+<h3>Reservations</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Customer Name</th>
+      <th>Phone</th>
+      <th>Table</th>
+      <th>Date</th>
+      <th>Guests</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in reservations %}
+    <tr>
+      <td>{{ r[1] }}</td>
+      <td>{{ r[2] }}</td>
+      <td>{{ r[3] }}</td>
+      <td>{{ r[4] }}</td>
+      <td>{{ r[5] }}</td>
+      <td class="actions">
+        <form method="post" action="{{ url_for('manager') }}" style="display: inline;">
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="reservation_id" value="{{ r[0] }}">
+          <button class="delete" type="submit">Delete</button>
+        </form>
+        <form method="get" action="{{ url_for('edit_reservation') }}" style="display: inline;">
+          <input type="hidden" name="reservation_id" value="{{ r[0] }}">
+          <button class="edit" type="submit">Edit</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  function toggleForm(formType) {
+    const searchForm = document.getElementById("search-form");
+    const addForm = document.getElementById("add-form");
+
+    if (formType === "search") {
+      searchForm.classList.add("active");
+      addForm.classList.remove("active");
+    } else if (formType === "add") {
+      addForm.classList.add("active");
+      searchForm.classList.remove("active");
+    }
+  }
+
+  document.getElementById("add-form").classList.add("active");
+</script>
+
+{% endblock %}
